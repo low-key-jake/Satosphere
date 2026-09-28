@@ -4,6 +4,7 @@ import { CustomCursor } from './components/CustomCursor';
 import { BitcoinManBackground } from './components/BitcoinManBackground';
 import { DecisionCard } from './components/DecisionCard';
 import { MarketOverviewCard } from './components/MarketOverviewCard';
+import { CapabilitySection } from './components/CapabilitySection';
 import { ProbabilityPie } from './components/ProbabilityPie';
 import { TradingChart } from './components/TradingChart';
 import { TechnicalRadar } from './components/TechnicalRadar';
@@ -228,7 +229,7 @@ export const App: React.FC = () => {
           />
         </div>
 
-        {/* B. Bitcoin Market Overview Card (Matching Screenshot 2) */}
+        {/* B. Bitcoin Market Overview Card */}
         <section id="market-overview-section" className="w-full max-w-7xl mx-auto px-6">
           <MarketOverviewCard
             overview={overview}
@@ -236,6 +237,15 @@ export const App: React.FC = () => {
             priceChangePercent={analysis?.ticker?.priceChangePercent}
           />
         </section>
+
+        {/* C. NovaAI 80vh Spacer — provides rhythm after the transition video wires freeze frame */}
+        <div className="h-[80vh]" aria-hidden="true" />
+
+        {/* D. NovaAI Inspired Capability Section */}
+        <CapabilitySection
+          onOpenLiveChart={handleOpenLiveChart}
+          onOpenNews={handleOpenNews}
+        />
 
         {/* C. Live Neural Market Chart & ML Probability Distribution (Matching Screenshot 1) */}
         <section className="w-full max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
