@@ -2,10 +2,11 @@ import React, { useEffect, useRef } from 'react';
 
 interface BitcoinManBackgroundProps {
   opacity: number;
-  scrollProgress?: number; // 0 to 1 over terminal scroll section
+  scrollProgress?: number; // 0 to 1 over full terminal scroll height
 }
 
 const TOTAL_TRANS_FRAMES = 40;
+const TOTAL_NOVA_FRAMES = 60;
 
 export const BitcoinManBackground: React.FC<BitcoinManBackgroundProps> = ({
   opacity,
@@ -13,9 +14,12 @@ export const BitcoinManBackground: React.FC<BitcoinManBackgroundProps> = ({
 }) => {
   const chartCanvasRef = useRef<HTMLCanvasElement>(null);
   const transCanvasRef = useRef<HTMLCanvasElement>(null);
-  const imagesRef = useRef<HTMLImageElement[]>([]);
+  const novaCanvasRef = useRef<HTMLCanvasElement>(null);
 
-  // Preload transition video frames
+  const transImagesRef = useRef<HTMLImageElement[]>([]);
+  const novaImagesRef = useRef<HTMLImageElement[]>([]);
+
+  // 1. Preload Stage 2 Transition Video frames (trans_00 to trans_39)
   useEffect(() => {
     const loadedImages: HTMLImageElement[] = [];
     for (let i = 0; i < TOTAL_TRANS_FRAMES; i++) {
@@ -24,23 +28,85 @@ export const BitcoinManBackground: React.FC<BitcoinManBackgroundProps> = ({
       img.src = `/transition_frames/trans_${num}.jpg`;
       loadedImages.push(img);
     }
-    imagesRef.current = loadedImages;
+    transImagesRef.current = loadedImages;
   }, []);
 
-  // Draw scrubbed transition video frame to canvas
+  // 2. Preload Stage 3 NovaAI 3D Video frames (nova_00 to nova_59)
+  useEffect(() => {
+    const loadedImages: HTMLImageElement[] = [];
+    for (let i = 0; i < TOTAL_NOVA_FRAMES; i++) {
+      const img = new Image();
+      const num = i.toString().padStart(2, '0');
+      img.src = `/nova_frames/nova_${num}.jpg`;
+      loadedImages.push(img);
+    }
+    novaImagesRef.current = loadedImages;
+  }, []);
+
+  // Render Stage 2 Transition Video (Drive Video) to transCanvasRef
   useEffect(() => {
     const canvas = transCanvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    const clampedProgress = Math.min(1, Math.max(0, scrollProgress));
+    // Map first half of terminal scroll (0.0 to 0.45) to trans frames 0..39 (reaching still wires)
+    const stage2Progress = Math.min(1, Math.max(0, scrollProgress / 0.45));
     const frameIndex = Math.min(
       TOTAL_TRANS_FRAMES - 1,
-      Math.max(0, Math.floor(clampedProgress * TOTAL_TRANS_FRAMES))
+      Math.max(0, Math.floor(stage2Progress * TOTAL_TRANS_FRAMES))
     );
 
-    const img = imagesRef.current[frameIndex];
+    const img = transImagesRef.current[frameIndex];
+
+    const draw = () => {
+      const w = (canvas.width = window.innerWidth);
+      const h = (canvas.height = window.innerHeight);
+
+      if (img && img.complete && img.naturalWidth > 0) {
+        const imgRatio = img.naturalWidth / img.naturalHeight;
+        const screenRatio = w / h;
+
+        let renderW = w;
+        let renderH = h;
+        let offsetX = 0;
+        let offsetY = 0;
+
+        if (screenRatio > imgRatio) {
+          renderH = w / imgRatio;
+          offsetY = (h - renderH) / 2;
+        } else {
+          renderW = h * imgRatio;
+          offsetX = (w - renderW) / 2;
+        }
+
+        ctx.clearRect(0, 0, w, h);
+        ctx.drawImage(img, offsetX, offsetY, renderW, renderH);
+      }
+    };
+
+    if (img && !img.complete) {
+      img.onload = draw;
+    } else {
+      draw();
+    }
+  }, [scrollProgress]);
+
+  // Render Stage 3 NovaAI 3D Video to novaCanvasRef (starts after still wires at scrollProgress > 0.40)
+  useEffect(() => {
+    const canvas = novaCanvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    // Map second half of terminal scroll (0.40 to 1.0) to nova frames 0..59
+    const stage3Progress = Math.min(1, Math.max(0, (scrollProgress - 0.40) / 0.60));
+    const frameIndex = Math.min(
+      TOTAL_NOVA_FRAMES - 1,
+      Math.max(0, Math.floor(stage3Progress * TOTAL_NOVA_FRAMES))
+    );
+
+    const img = novaImagesRef.current[frameIndex];
 
     const draw = () => {
       const w = (canvas.width = window.innerWidth);
@@ -166,9 +232,12 @@ export const BitcoinManBackground: React.FC<BitcoinManBackgroundProps> = ({
 
   if (opacity <= 0.01) return null;
 
+  // Compute crossfade opacity between Stage 2 (Transition Video) and Stage 3 (NovaAI Video)
+  const novaOpacity = Math.min(1, Math.max(0, (scrollProgress - 0.38) / 0.15));
+
   return (
     <div
-      className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden transition-opacity duration-300"
+      className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden transition-opacity duration-300 bg-[#0a0a0a]"
       style={{ opacity }}
     >
       {/* 1. Base Bitcoin Man Image Background */}
@@ -180,9 +249,9 @@ export const BitcoinManBackground: React.FC<BitcoinManBackgroundProps> = ({
         />
       </div>
 
-      {/* 2. Transition Video Canvas Layer (Scrubbing smoothly as user scrolls) */}
+      {/* 2. Stage 2 Transition Video Canvas Layer (Drive Video: trans_00 -> trans_39 still wires) */}
       <div 
-        className="absolute inset-0 w-full h-full pointer-events-none transition-opacity duration-500"
+        className="absolute inset-0 w-full h-full pointer-events-none transition-opacity duration-300"
         style={{ opacity: Math.min(1, scrollProgress * 3) }}
       >
         <canvas
@@ -191,14 +260,25 @@ export const BitcoinManBackground: React.FC<BitcoinManBackgroundProps> = ({
         />
       </div>
 
-      {/* 3. Floating Animated Chart Wave Canvas in Sky */}
+      {/* 3. Stage 3 NovaAI 3D Video Canvas Layer (Triggers after wires are still: nova_00 -> nova_59) */}
+      <div 
+        className="absolute inset-0 w-full h-full pointer-events-none transition-opacity duration-500"
+        style={{ opacity: novaOpacity }}
+      >
+        <canvas
+          ref={novaCanvasRef}
+          className="w-full h-full object-cover filter brightness-[0.95] contrast-[1.05]"
+        />
+      </div>
+
+      {/* 4. Floating Animated Chart Wave Canvas in Sky */}
       <canvas
         ref={chartCanvasRef}
-        className="absolute inset-0 w-full h-full pointer-events-none opacity-85"
+        className="absolute inset-0 w-full h-full pointer-events-none opacity-80"
       />
 
-      {/* 4. Subtle Dreamy Night Vignette */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[#030e18]/45 via-transparent to-[#030e18]/90 pointer-events-none" />
+      {/* 5. Subtle Dreamy Night Vignette */}
+      <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a]/45 via-transparent to-[#0a0a0a]/90 pointer-events-none" />
 
       {/* Drifting Flower Petals blown by wind */}
       <div className="wind-petal bg-amber-200/40 w-3 h-2" style={{ top: '15%', left: '80%', animationDelay: '0s', animationDuration: '12s' }} />

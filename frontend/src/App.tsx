@@ -56,8 +56,8 @@ export const App: React.FC = () => {
   const heroZoomProgress = Math.min(1, Math.max(0, scrollY / 1150));
   // Reveal the locked background as video reaches maximum zoom
   const secondBgOpacity = Math.min(1, Math.max(0, (scrollY - 750) / 400));
-  // Terminal scroll progress (0 to 1 as user scrolls through terminal dashboard)
-  const terminalScrollProgress = Math.min(1, Math.max(0, (scrollY - 1100) / 1800));
+  // Terminal scroll progress (0 to 1 as user scrolls through terminal dashboard & NovaAI video)
+  const terminalScrollProgress = Math.min(1, Math.max(0, (scrollY - 1100) / 2400));
 
   // Slide-in effect for the "Should You Buy?" DecisionCard as user scrolls past the maximum zoom
   const decisionSlideProgress = Math.min(1, Math.max(0, (scrollY - 950) / 350));
