@@ -53,8 +53,10 @@ export const App: React.FC = () => {
 
   // Compute scroll camera progress (0 to 1 over the 60fps frame-scrubbed video zoom)
   const heroZoomProgress = Math.min(1, Math.max(0, scrollY / 1150));
-  // Reveal the locked Bitcoin man background as video reaches maximum zoom
+  // Reveal the locked background as video reaches maximum zoom
   const secondBgOpacity = Math.min(1, Math.max(0, (scrollY - 750) / 400));
+  // Terminal scroll progress (0 to 1 as user scrolls through terminal dashboard)
+  const terminalScrollProgress = Math.min(1, Math.max(0, (scrollY - 1100) / 1800));
 
   // Slide-in effect for the "Should You Buy?" DecisionCard as user scrolls past the maximum zoom
   const decisionSlideProgress = Math.min(1, Math.max(0, (scrollY - 950) / 350));
@@ -136,8 +138,8 @@ export const App: React.FC = () => {
       {/* Custom Lerp Cursor (Warm Champagne Gold) */}
       <CustomCursor />
 
-      {/* Locked Atmospheric Background for the rest of website (Bitcoin man with moving chart in sky & fireflies) */}
-      <BitcoinManBackground opacity={secondBgOpacity} />
+      {/* Locked Atmospheric Background for the rest of website (Bitcoin man with video transition & fireflies) */}
+      <BitcoinManBackground opacity={secondBgOpacity} scrollProgress={terminalScrollProgress} />
 
       {/* 1. CINEMATIC PINNED CAMERA SEQUENCE (240vh scroll track for locked video zoom) */}
       <div className="relative w-full h-[240vh]">

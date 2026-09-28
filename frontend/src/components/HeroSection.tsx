@@ -91,10 +91,21 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
 
   return (
     <div className="relative w-full h-full min-h-screen flex flex-col justify-between overflow-hidden bg-[#040a17]">
+      {/* ─── FULLSCREEN AUTOPLAY LOOPING HERO BACKGROUND VIDEO (Initial state) ─── */}
+      <video
+        src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260314_131748_f2ca2a28-fed7-44c8-b9a9-bd9acdd5ec31.mp4"
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover z-0 filter brightness-[0.92] contrast-[1.05] transition-opacity duration-300"
+        style={{ opacity: scrollProgress < 0.02 ? 1 : 0 }}
+      />
+
       {/* ─── SCROLL-LOCKED HIGH-PERFORMANCE 60FPS VIDEO ZOOM CANVAS ─── */}
       <div 
         className="absolute inset-0 w-full h-full pointer-events-none z-0 transition-opacity duration-75"
-        style={{ opacity: canvasOpacity }}
+        style={{ opacity: scrollProgress >= 0.02 ? canvasOpacity : 0 }}
       >
         <canvas
           ref={canvasRef}

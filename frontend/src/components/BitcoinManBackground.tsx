@@ -2,11 +2,80 @@ import React, { useEffect, useRef } from 'react';
 
 interface BitcoinManBackgroundProps {
   opacity: number;
+  scrollProgress?: number; // 0 to 1 over terminal scroll section
 }
 
-export const BitcoinManBackground: React.FC<BitcoinManBackgroundProps> = ({ opacity }) => {
-  const chartCanvasRef = useRef<HTMLCanvasElement>(null);
+const TOTAL_TRANS_FRAMES = 40;
 
+export const BitcoinManBackground: React.FC<BitcoinManBackgroundProps> = ({
+  opacity,
+  scrollProgress = 0
+}) => {
+  const chartCanvasRef = useRef<HTMLCanvasElement>(null);
+  const transCanvasRef = useRef<HTMLCanvasElement>(null);
+  const imagesRef = useRef<HTMLImageElement[]>([]);
+
+  // Preload transition video frames
+  useEffect(() => {
+    const loadedImages: HTMLImageElement[] = [];
+    for (let i = 0; i < TOTAL_TRANS_FRAMES; i++) {
+      const img = new Image();
+      const num = i.toString().padStart(2, '0');
+      img.src = `/transition_frames/trans_${num}.jpg`;
+      loadedImages.push(img);
+    }
+    imagesRef.current = loadedImages;
+  }, []);
+
+  // Draw scrubbed transition video frame to canvas
+  useEffect(() => {
+    const canvas = transCanvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    const clampedProgress = Math.min(1, Math.max(0, scrollProgress));
+    const frameIndex = Math.min(
+      TOTAL_TRANS_FRAMES - 1,
+      Math.max(0, Math.floor(clampedProgress * TOTAL_TRANS_FRAMES))
+    );
+
+    const img = imagesRef.current[frameIndex];
+
+    const draw = () => {
+      const w = (canvas.width = window.innerWidth);
+      const h = (canvas.height = window.innerHeight);
+
+      if (img && img.complete && img.naturalWidth > 0) {
+        const imgRatio = img.naturalWidth / img.naturalHeight;
+        const screenRatio = w / h;
+
+        let renderW = w;
+        let renderH = h;
+        let offsetX = 0;
+        let offsetY = 0;
+
+        if (screenRatio > imgRatio) {
+          renderH = w / imgRatio;
+          offsetY = (h - renderH) / 2;
+        } else {
+          renderW = h * imgRatio;
+          offsetX = (w - renderW) / 2;
+        }
+
+        ctx.clearRect(0, 0, w, h);
+        ctx.drawImage(img, offsetX, offsetY, renderW, renderH);
+      }
+    };
+
+    if (img && !img.complete) {
+      img.onload = draw;
+    } else {
+      draw();
+    }
+  }, [scrollProgress]);
+
+  // Animated sky chart & fireflies canvas
   useEffect(() => {
     const canvas = chartCanvasRef.current;
     if (!canvas) return;
@@ -24,7 +93,6 @@ export const BitcoinManBackground: React.FC<BitcoinManBackgroundProps> = ({ opac
     };
     window.addEventListener('resize', onResize);
 
-    // Dynamic animated floating candlestick wave points in the night sky
     const pointsCount = 42;
     const candles = Array.from({ length: pointsCount }, (_, i) => ({
       baseY: height * 0.30 + Math.sin(i * 0.42) * 65,
@@ -42,7 +110,6 @@ export const BitcoinManBackground: React.FC<BitcoinManBackgroundProps> = ({ opac
 
       const step = width / (pointsCount - 1);
 
-      // 1. Draw glowing wave line behind the candlesticks
       ctx.beginPath();
       ctx.strokeStyle = 'rgba(212, 175, 55, 0.55)';
       ctx.lineWidth = 2.5;
@@ -51,7 +118,6 @@ export const BitcoinManBackground: React.FC<BitcoinManBackgroundProps> = ({ opac
 
       for (let i = 0; i < pointsCount; i++) {
         const c = candles[i];
-        // Dynamic undulating wave motion
         const yOffset = Math.sin(t * c.speedY * 18 + c.phase) * 22 + Math.cos(t * 0.5 + i * 0.3) * 14;
         const xOffset = Math.sin(t * 0.4 + i) * 6;
         const x = i * step + xOffset;
@@ -61,13 +127,11 @@ export const BitcoinManBackground: React.FC<BitcoinManBackgroundProps> = ({ opac
       }
       ctx.stroke();
 
-      // 2. Draw moving glowing candlesticks
       candles.forEach((c, i) => {
         const yOffset = Math.sin(t * c.speedY * 18 + c.phase) * 22 + Math.cos(t * 0.5 + i * 0.3) * 14;
         const xOffset = Math.sin(t * 0.4 + i) * 6;
         const x = i * step + xOffset;
         const y = c.baseY + yOffset;
-        // Fluctuating candle body height for active motion
         const dynamicH = c.height + Math.sin(t * 2 + i) * 8;
 
         ctx.shadowBlur = 10;
@@ -81,13 +145,11 @@ export const BitcoinManBackground: React.FC<BitcoinManBackgroundProps> = ({ opac
           ctx.shadowColor = '#f59e0b';
         }
 
-        // Wick
         ctx.beginPath();
         ctx.moveTo(x, y - dynamicH * 1.3);
         ctx.lineTo(x, y + dynamicH * 1.3);
         ctx.stroke();
 
-        // Body
         ctx.fillRect(x - 5, y - dynamicH * 0.5, 10, Math.max(4, dynamicH));
       });
 
@@ -109,22 +171,33 @@ export const BitcoinManBackground: React.FC<BitcoinManBackgroundProps> = ({ opac
       className="fixed inset-0 w-full h-full pointer-events-none z-0 overflow-hidden transition-opacity duration-300"
       style={{ opacity }}
     >
-      {/* Background Image: Bitcoin man in flower field with wind swaying effect */}
+      {/* 1. Base Bitcoin Man Image Background */}
       <div className="absolute inset-0 w-full h-full wind-swaying-flowers">
         <img
           src="/bitcoin_man_bg.jpg"
-          alt="Satosphere Bitcoin Assistance"
+          alt="Satosphere Bitcoin Background"
           className="w-full h-full object-cover object-center filter brightness-[0.88] contrast-[1.05]"
         />
       </div>
 
-      {/* Floating Animated Chart Wave Canvas in Sky (Continuously in lively motion) */}
+      {/* 2. Transition Video Canvas Layer (Scrubbing smoothly as user scrolls) */}
+      <div 
+        className="absolute inset-0 w-full h-full pointer-events-none transition-opacity duration-500"
+        style={{ opacity: Math.min(1, scrollProgress * 3) }}
+      >
+        <canvas
+          ref={transCanvasRef}
+          className="w-full h-full object-cover filter brightness-[0.92] contrast-[1.05]"
+        />
+      </div>
+
+      {/* 3. Floating Animated Chart Wave Canvas in Sky */}
       <canvas
         ref={chartCanvasRef}
         className="absolute inset-0 w-full h-full pointer-events-none opacity-85"
       />
 
-      {/* Subtle Dreamy Night Vignette */}
+      {/* 4. Subtle Dreamy Night Vignette */}
       <div className="absolute inset-0 bg-gradient-to-b from-[#030e18]/45 via-transparent to-[#030e18]/90 pointer-events-none" />
 
       {/* Drifting Flower Petals blown by wind */}
