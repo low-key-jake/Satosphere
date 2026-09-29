@@ -57,16 +57,16 @@ export const PlainLiveChartModal: React.FC<PlainLiveChartModalProps> = ({
         {/* Top Header Bar */}
         <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 border-b border-white/10 gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-12 h-12 rounded-2xl bg-amber-500/15 border border-amber-500/30 flex items-center justify-center text-amber-400">
+            <div className="w-12 h-12 rounded-2xl bg-[#ff6a00]/15 border border-[#ff6a00]/30 flex items-center justify-center text-[#ff6a00] drop-shadow-[0_0_8px_rgba(255,106,0,0.5)]">
               <Bitcoin className="w-7 h-7" />
             </div>
             <div>
-              <div className="flex items-center gap-2 text-xs font-mono text-white/50">
+              <div className="flex items-center gap-2 text-xs font-mono text-white/90">
                 <span>Cryptocurrency</span>
                 <span>•</span>
                 <span>USD</span>
                 <span>•</span>
-                <span className="text-amber-400 font-semibold">Live Market Feed</span>
+                <span className="text-[#ff6a00] font-semibold drop-shadow-[0_0_5px_rgba(255,106,0,0.6)]">Live Market Feed</span>
               </div>
               <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white">
                 Bitcoin USD Price (BTC-USD)
@@ -76,10 +76,10 @@ export const PlainLiveChartModal: React.FC<PlainLiveChartModalProps> = ({
 
           <div className="flex items-center gap-4">
             <div className="flex flex-col sm:items-end">
-              <div className="text-3xl font-mono font-bold text-white tracking-tight">
+              <div className="text-3xl font-mono font-bold text-[#ff6a00] tracking-tight drop-shadow-[0_0_8px_rgba(255,106,0,0.4)]">
                 ${(hoveredCandle?.close || currentPrice).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
               </div>
-              <div className={`text-xs font-mono font-semibold flex items-center gap-1 ${isPositive ? 'text-emerald-400' : 'text-rose-400'}`}>
+              <div className={`text-xs font-mono font-semibold flex items-center gap-1 ${isPositive ? 'text-[#00ff73]' : 'text-[#ff003c]'}`}>
                 {isPositive ? <TrendingUp className="w-3.5 h-3.5" /> : <TrendingDown className="w-3.5 h-3.5" />}
                 <span>{isPositive ? '+' : ''}{(currentPrice * (priceChangePercent / 100)).toFixed(2)} ({isPositive ? '+' : ''}{priceChangePercent.toFixed(2)}%)</span>
               </div>
@@ -90,7 +90,7 @@ export const PlainLiveChartModal: React.FC<PlainLiveChartModalProps> = ({
               target="_blank"
               rel="noopener noreferrer"
               data-cursor="Open Tab"
-              className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-amber-400 hover:text-black text-white text-xs font-mono flex items-center gap-1.5 transition-colors cursor-pointer"
+              className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-[#ff6a00] hover:text-black text-white text-xs font-mono flex items-center gap-1.5 transition-colors cursor-pointer"
             >
               <span>Full TradingView Tab</span>
               <ExternalLink className="w-3.5 h-3.5" />
@@ -113,7 +113,7 @@ export const PlainLiveChartModal: React.FC<PlainLiveChartModalProps> = ({
                 key={range}
                 onClick={() => setActiveRange(range)}
                 className={`px-3 py-1 rounded-lg transition-all cursor-pointer ${
-                  activeRange === range ? 'bg-amber-400 text-black font-bold shadow-md' : 'text-white/60 hover:text-white'
+                  activeRange === range ? 'bg-[#ff6a00] text-black font-bold shadow-[0_0_10px_rgba(255,106,0,0.4)]' : 'text-white/90 hover:text-white'
                 }`}
               >
                 {range}
@@ -125,7 +125,7 @@ export const PlainLiveChartModal: React.FC<PlainLiveChartModalProps> = ({
             <button
               onClick={() => setChartType('area')}
               className={`px-3 py-1 rounded-lg border transition-all cursor-pointer ${
-                chartType === 'area' ? 'bg-white/20 border-white/40 text-white font-semibold' : 'border-white/10 text-white/50'
+                chartType === 'area' ? 'bg-white/20 border-white/40 text-[#ff6a00] font-semibold drop-shadow-[0_0_5px_rgba(255,106,0,0.4)]' : 'border-white/10 text-white/90'
               }`}
             >
               Area
@@ -133,7 +133,7 @@ export const PlainLiveChartModal: React.FC<PlainLiveChartModalProps> = ({
             <button
               onClick={() => setChartType('candles')}
               className={`px-3 py-1 rounded-lg border transition-all cursor-pointer ${
-                chartType === 'candles' ? 'bg-white/20 border-white/40 text-white font-semibold' : 'border-white/10 text-white/50'
+                chartType === 'candles' ? 'bg-white/20 border-white/40 text-[#ff6a00] font-semibold drop-shadow-[0_0_5px_rgba(255,106,0,0.4)]' : 'border-white/10 text-white/90'
               }`}
             >
               Candles
@@ -152,13 +152,13 @@ export const PlainLiveChartModal: React.FC<PlainLiveChartModalProps> = ({
             setHoverIndex(idx);
           }}
           onMouseLeave={() => setHoverIndex(null)}
-          className="relative w-full aspect-[22/10] min-h-[380px] bg-black/60 rounded-2xl p-4 my-4 overflow-hidden border border-white/10 cursor-crosshair select-none"
+          className="relative w-full aspect-[22/10] min-h-[380px] bg-[#030e18]/80 rounded-2xl p-4 my-4 overflow-hidden border border-white/10 cursor-crosshair select-none shadow-inner"
         >
           <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-full overflow-visible">
             <defs>
               <linearGradient id="plainChartGradient" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="0%" stopColor="#d4af37" stopOpacity="0.35" />
-                <stop offset="100%" stopColor="#d4af37" stopOpacity="0.0" />
+                <stop offset="0%" stopColor="#00f0ff" stopOpacity="0.35" />
+                <stop offset="100%" stopColor="#00f0ff" stopOpacity="0.0" />
               </linearGradient>
             </defs>
 
@@ -170,15 +170,42 @@ export const PlainLiveChartModal: React.FC<PlainLiveChartModalProps> = ({
                 y1={height * ratio}
                 x2={width - 30}
                 y2={height * ratio}
-                stroke="rgba(255, 255, 255, 0.06)"
+                stroke="rgba(255, 255, 255, 0.04)"
                 strokeDasharray="4 4"
               />
             ))}
 
+            {/* Volume Histogram Background Layer */}
+            {displayedCandles.map((c, i) => {
+              const x = getX(i);
+              const maxVol = Math.max(...displayedCandles.map(d => d.volume));
+              const volHeight = maxVol > 0 ? (c.volume / maxVol) * (height * 0.25) : 0;
+              const isGreen = c.close >= c.open;
+              return (
+                <rect
+                  key={`vol-${i}`}
+                  x={x - (chartType === 'candles' ? 3 : 1)}
+                  y={height - volHeight}
+                  width={chartType === 'candles' ? 6 : 2}
+                  height={volHeight}
+                  fill={isGreen ? 'rgba(0, 255, 115, 0.15)' : 'rgba(255, 0, 60, 0.15)'}
+                />
+              );
+            })}
+
             {chartType === 'area' ? (
               <>
                 <polygon points={areaPoints} fill="url(#plainChartGradient)" />
-                <polyline points={pricePoints} fill="none" stroke="#e5c07b" strokeWidth="2.5" />
+                <polyline points={pricePoints} fill="none" stroke="#00f0ff" strokeWidth="2.5" />
+                {/* Live Pulse Dot at the end of the line */}
+                <circle
+                  cx={getX(displayedCandles.length - 1)}
+                  cy={getY(displayedCandles[displayedCandles.length - 1].close)}
+                  r="4"
+                  fill="#00f0ff"
+                  className="animate-pulse"
+                  style={{ filter: 'drop-shadow(0 0 6px #00f0ff)' }}
+                />
               </>
             ) : (
               displayedCandles.map((c, i) => {
@@ -194,14 +221,14 @@ export const PlainLiveChartModal: React.FC<PlainLiveChartModalProps> = ({
                 return (
                   <g key={i}>
                     {/* Wick */}
-                    <line x1={x} y1={yHigh} x2={x} y2={yLow} stroke={isGreen ? '#34d399' : '#f87171'} strokeWidth="1.2" />
+                    <line x1={x} y1={yHigh} x2={x} y2={yLow} stroke={isGreen ? '#00ff73' : '#ff003c'} strokeWidth="1.2" />
                     {/* Body */}
                     <rect
                       x={x - 4}
                       y={topY}
                       width={8}
                       height={candleHeight}
-                      fill={isGreen ? '#10b981' : '#ef4444'}
+                      fill={isGreen ? '#00ff73' : '#ff003c'}
                     />
                   </g>
                 );
@@ -224,8 +251,9 @@ export const PlainLiveChartModal: React.FC<PlainLiveChartModalProps> = ({
                   cy={getY(hoveredCandle.close)}
                   r="5"
                   fill="#ffffff"
-                  stroke="#d4af37"
+                  stroke="#ff6a00"
                   strokeWidth="2.5"
+                  style={{ filter: 'drop-shadow(0 0 4px #ff6a00)' }}
                 />
               </>
             )}
@@ -234,7 +262,7 @@ export const PlainLiveChartModal: React.FC<PlainLiveChartModalProps> = ({
           {/* Hover values tooltip */}
           {hoverIndex !== null && (
             <div className="absolute top-4 left-6 bg-black/80 backdrop-blur-md px-3 py-1.5 rounded-xl border border-white/10 text-xs font-mono text-white flex items-center gap-4">
-              <span>Time: <strong className="text-amber-300">{hoveredCandle.time}</strong></span>
+              <span>Time: <strong className="text-[#ff6a00]">{hoveredCandle.time}</strong></span>
               <span>Price: <strong className="text-white">${hoveredCandle.close.toLocaleString()}</strong></span>
               <span>Volume: <strong className="text-white/80">{hoveredCandle.volume.toFixed(2)} BTC</strong></span>
             </div>
@@ -245,27 +273,27 @@ export const PlainLiveChartModal: React.FC<PlainLiveChartModalProps> = ({
         {overview && (
           <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-6 gap-3 pt-4 border-t border-white/10 text-xs font-mono">
             <div className="p-3 rounded-xl bg-white/5">
-              <span className="text-white/40 block text-[10px]">MARKET CAP</span>
+              <span className="text-white/80 block text-[10px]">MARKET CAP</span>
               <strong className="text-white text-sm">{overview.market_cap}</strong>
             </div>
             <div className="p-3 rounded-xl bg-white/5">
-              <span className="text-white/40 block text-[10px]">24H VOLUME</span>
+              <span className="text-white/80 block text-[10px]">24H VOLUME</span>
               <strong className="text-white text-sm">{overview.volume_24h}</strong>
             </div>
             <div className="p-3 rounded-xl bg-white/5">
-              <span className="text-white/40 block text-[10px]">DAY'S RANGE</span>
+              <span className="text-white/80 block text-[10px]">DAY'S RANGE</span>
               <strong className="text-white text-xs">${overview.days_range_low.toLocaleString()} - ${overview.days_range_high.toLocaleString()}</strong>
             </div>
             <div className="p-3 rounded-xl bg-white/5">
-              <span className="text-white/40 block text-[10px]">52W RANGE</span>
+              <span className="text-white/80 block text-[10px]">52W RANGE</span>
               <strong className="text-white text-xs">${overview.week_52_low.toLocaleString()} - ${overview.week_52_high.toLocaleString()}</strong>
             </div>
-            <div className="p-3 rounded-xl bg-white/5">
-              <span className="text-white/40 block text-[10px]">ALL-TIME HIGH</span>
-              <strong className="text-amber-300 text-sm">${overview.all_time_high.toLocaleString()}</strong>
+            <div className="p-3 rounded-xl bg-white/5 border border-[#ff6a00]/20 bg-[#ff6a00]/5">
+              <span className="text-[#ff6a00]/80 block text-[10px]">ALL-TIME HIGH</span>
+              <strong className="text-[#ff6a00] text-sm drop-shadow-[0_0_5px_rgba(255,106,0,0.4)]">${overview.all_time_high.toLocaleString()}</strong>
             </div>
             <div className="p-3 rounded-xl bg-white/5">
-              <span className="text-white/40 block text-[10px]">CIRCULATING SUPPLY</span>
+              <span className="text-white/80 block text-[10px]">CIRCULATING SUPPLY</span>
               <strong className="text-white text-sm">{overview.circulating_supply}</strong>
             </div>
           </div>
@@ -274,3 +302,4 @@ export const PlainLiveChartModal: React.FC<PlainLiveChartModalProps> = ({
     </div>
   );
 };
+

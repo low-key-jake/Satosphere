@@ -167,7 +167,8 @@ class CryptoPredictor:
                 "sell": p_sell
             },
             "metrics": self.metrics,
-            "feature_importances": self.feature_importances
+            "feature_importances": self.feature_importances,
+            "model_name": "Voting Ensemble (GB + RF)"
         }
 
 # Global singleton

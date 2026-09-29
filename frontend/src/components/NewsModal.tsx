@@ -25,7 +25,7 @@ export const NewsModal: React.FC<NewsModalProps> = ({ isOpen, onClose, articles,
               <h3 className="text-2xl font-normal text-white" style={{ fontFamily: "'Instrument Serif', serif" }}>
                 Satosphere Bitcoin Intelligence & News
               </h3>
-              <p className="text-xs font-mono text-white/50">
+              <p className="text-xs font-mono text-white/90">
                 Curated real-time feeds from CoinDesk, Mempool, and Institutional Dispatches
               </p>
             </div>
@@ -42,12 +42,12 @@ export const NewsModal: React.FC<NewsModalProps> = ({ isOpen, onClose, articles,
         {/* Content list */}
         <div className="overflow-y-auto space-y-4 py-6 pr-2">
           {loading ? (
-            <div className="flex flex-col items-center justify-center py-16 text-white/50 font-mono text-xs gap-3">
+            <div className="flex flex-col items-center justify-center py-16 text-white/90 font-mono text-xs gap-3">
               <div className="w-8 h-8 rounded-full border-2 border-amber-400 border-t-transparent animate-spin" />
               <span>Fetching live CoinDesk feeds...</span>
             </div>
           ) : articles.length === 0 ? (
-            <div className="text-center py-12 text-white/50 text-sm font-mono">
+            <div className="text-center py-12 text-white/90 text-sm font-mono">
               No recent dispatches loaded.
             </div>
           ) : (
@@ -78,7 +78,7 @@ export const NewsModal: React.FC<NewsModalProps> = ({ isOpen, onClose, articles,
                         {isBear && <TrendingDown className="w-3 h-3" />}
                         {item.sentiment}
                       </span>
-                      <span className="text-[11px] font-mono text-white/40 flex items-center gap-1">
+                      <span className="text-[11px] font-mono text-white/80 flex items-center gap-1">
                         <Clock className="w-3 h-3" /> {item.pubDate}
                       </span>
                     </div>
@@ -88,7 +88,7 @@ export const NewsModal: React.FC<NewsModalProps> = ({ isOpen, onClose, articles,
                     </h4>
 
                     {item.description && (
-                      <p className="text-xs text-white/60 leading-relaxed">
+                      <p className="text-xs text-white/90 leading-relaxed">
                         {item.description}
                       </p>
                     )}
@@ -110,7 +110,7 @@ export const NewsModal: React.FC<NewsModalProps> = ({ isOpen, onClose, articles,
         </div>
 
         {/* Footer */}
-        <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/40">
+        <div className="pt-4 border-t border-white/10 flex items-center justify-between text-xs font-mono text-white/80">
           <div className="flex items-center gap-1.5">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
             <span>Price Impact Evaluated by Satosphere ML</span>
@@ -121,3 +121,4 @@ export const NewsModal: React.FC<NewsModalProps> = ({ isOpen, onClose, articles,
     </div>
   );
 };
+

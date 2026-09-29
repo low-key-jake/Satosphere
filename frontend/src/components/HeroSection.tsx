@@ -175,7 +175,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
           className="text-4xl sm:text-6xl md:text-7xl leading-[0.95] tracking-[-2px] max-w-5xl font-normal text-white/95 mt-10 drop-shadow-md"
           style={{ fontFamily: "'Instrument Serif', serif" }}
         >
-          Where intelligence <em className="not-italic text-white/40">rises</em> through the silence.
+          Where intelligence <em className="not-italic text-white/80">rises</em> through the silence.
         </h1>
         <p className="text-white/55 text-base sm:text-lg max-w-2xl mt-8 leading-relaxed">
           Dual-engine machine learning and multi-factor quantitative strategies —
@@ -191,7 +191,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
         <button
           onClick={onScrollToTerminal}
           data-cursor="Scroll Down"
-          className="text-xs uppercase tracking-widest text-white/50 hover:text-white flex flex-col items-center gap-2 cursor-pointer transition-colors"
+          className="text-xs uppercase tracking-widest text-white/90 hover:text-white flex flex-col items-center gap-2 cursor-pointer transition-colors"
         >
           <span>Scroll to Zoom into Terminal</span>
           <ArrowDown className="w-4 h-4 animate-bounce text-amber-200/70" />
@@ -200,3 +200,4 @@ export const HeroSection: React.FC<HeroSectionProps> = ({
     </div>
   );
 };
+

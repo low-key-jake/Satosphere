@@ -32,6 +32,7 @@ export interface AnalysisResponse {
       samples_trained: number;
     };
     feature_importances: Record<string, number>;
+    model_name?: string;
   };
   quantitative: {
     score: number;

@@ -252,7 +252,7 @@ export const BitcoinManBackground: React.FC<BitcoinManBackgroundProps> = ({
       {/* 2. Stage 2 Transition Video Canvas Layer (Drive Video: trans_00 -> trans_39 still wires) */}
       <div 
         className="absolute inset-0 w-full h-full pointer-events-none transition-opacity duration-300"
-        style={{ opacity: Math.min(1, scrollProgress * 3) }}
+        style={{ opacity: Math.min(1, scrollProgress * 10) }}
       >
         <canvas
           ref={transCanvasRef}
@@ -297,3 +297,4 @@ export const BitcoinManBackground: React.FC<BitcoinManBackgroundProps> = ({
     </div>
   );
 };
+

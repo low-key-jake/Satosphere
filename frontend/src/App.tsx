@@ -4,7 +4,7 @@ import { CustomCursor } from './components/CustomCursor';
 import { BitcoinManBackground } from './components/BitcoinManBackground';
 import { DecisionCard } from './components/DecisionCard';
 import { MarketOverviewCard } from './components/MarketOverviewCard';
-import { CapabilitySection } from './components/CapabilitySection';
+
 import { ProbabilityPie } from './components/ProbabilityPie';
 import { TradingChart } from './components/TradingChart';
 import { TechnicalRadar } from './components/TechnicalRadar';
@@ -43,12 +43,17 @@ export const App: React.FC = () => {
   const [retraining, setRetraining] = useState(false);
   const [scrollY, setScrollY] = useState(0);
 
+  const [maxScroll, setMaxScroll] = useState(3000);
+
   // Track window scroll for locked camera sequence
   useEffect(() => {
     const handleScroll = () => {
       setScrollY(window.scrollY);
+      setMaxScroll(document.documentElement.scrollHeight - window.innerHeight);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
+    // Trigger once on mount
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -56,13 +61,33 @@ export const App: React.FC = () => {
   const heroZoomProgress = Math.min(1, Math.max(0, scrollY / 1150));
   // Reveal the locked background as video reaches maximum zoom
   const secondBgOpacity = Math.min(1, Math.max(0, (scrollY - 750) / 400));
-  // Terminal scroll progress (0 to 1 as user scrolls through terminal dashboard & NovaAI video)
-  const terminalScrollProgress = Math.min(1, Math.max(0, (scrollY - 1100) / 2400));
+  // Terminal scroll progress starts after "Should you buy" (scrollY ~1300) and ends at the bottom
+  const terminalScrollProgress = Math.min(1, Math.max(0, (scrollY - 1200) / Math.max(1, maxScroll - 1200)));
 
-  // Slide-in effect for the "Should You Buy?" DecisionCard as user scrolls past the maximum zoom
+  // Slide-in effect for the "Should You Buy?" DecisionCard (Slides from Left)
   const decisionSlideProgress = Math.min(1, Math.max(0, (scrollY - 950) / 350));
-  const decisionTransformX = (1 - decisionSlideProgress) * 120;
+  const decisionTransformX = (1 - decisionSlideProgress) * -800;
   const decisionOpacity = decisionSlideProgress;
+
+  // Slide-in effect for Market Overview (Slides from Right)
+  const marketSlideProgress = Math.min(1, Math.max(0, (scrollY - 1100) / 350));
+  const marketTransformX = (1 - marketSlideProgress) * 800;
+  const marketOpacity = marketSlideProgress;
+  
+  // Slide-in effect for the Charts Section (Slides from Left)
+  const chartSlideProgress = Math.min(1, Math.max(0, (scrollY - 1400) / 400));
+  const chartTransformX = (1 - chartSlideProgress) * -800;
+  const chartOpacity = chartSlideProgress;
+  
+  // Slide-in effect for Radar (Slides from Right)
+  const radarSlideProgress = Math.min(1, Math.max(0, (scrollY - 1800) / 400));
+  const radarTransformX = (1 - radarSlideProgress) * 800;
+  const radarOpacity = radarSlideProgress;
+  
+  // Slide-in effect for Backtest (Slides from Left)
+  const backtestSlideProgress = Math.min(1, Math.max(0, (scrollY - 2200) / 400));
+  const backtestTransformX = (1 - backtestSlideProgress) * -800;
+  const backtestOpacity = backtestSlideProgress;
 
   // Load all telemetry
   const loadData = async (targetSymbol: string = symbol, targetInterval: string = interval) => {
@@ -135,7 +160,7 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="relative min-h-screen bg-[#030e18] text-white overflow-x-hidden selection:bg-[#c9b896]/25 selection:text-white">
+    <div className="relative min-h-screen bg-[#030e18] text-white overflow-x-hidden selection:bg-[#00f0ff]/25 selection:text-white">
       {/* Custom Lerp Cursor (Warm Champagne Gold) */}
       <CustomCursor />
 
@@ -143,7 +168,7 @@ export const App: React.FC = () => {
       <BitcoinManBackground opacity={secondBgOpacity} scrollProgress={terminalScrollProgress} />
 
       {/* 1. CINEMATIC PINNED CAMERA SEQUENCE (240vh scroll track for locked video zoom) */}
-      <div className="relative w-full h-[240vh]">
+      <div className="relative w-full" style={{ height: 'calc(1150px + 100vh)' }}>
         <div 
           className={heroZoomProgress < 0.99 ? "fixed inset-0 w-full h-screen overflow-hidden z-20" : "absolute bottom-0 w-full h-screen overflow-hidden z-0 pointer-events-none opacity-0"}
         >
@@ -161,18 +186,18 @@ export const App: React.FC = () => {
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-4 text-xs font-mono">
           <div className="flex items-center gap-6">
             <span className="flex items-center gap-2 text-white/80">
-              <span className="w-2 h-2 rounded-full bg-[#c9b896] animate-pulse" />
+              <span className="w-2 h-2 rounded-full bg-[#00f0ff] animate-pulse" />
               SATOSPHERE TELEMETRY: <strong className="text-white">Bitcoin (BTC)</strong>
             </span>
             {analysis?.ticker && (
               <>
-                <span className="hidden sm:inline text-white/50">
+                <span className="hidden sm:inline text-white/90">
                   24h High: <strong className="text-white">${analysis.ticker.highPrice.toLocaleString()}</strong>
                 </span>
-                <span className="hidden sm:inline text-white/50">
+                <span className="hidden sm:inline text-white/90">
                   24h Low: <strong className="text-white">${analysis.ticker.lowPrice.toLocaleString()}</strong>
                 </span>
-                <span className={`font-semibold ${analysis.ticker.priceChangePercent >= 0 ? 'text-[#8fae8b]' : 'text-[#c4868a]'}`}>
+                <span className={`font-semibold ${analysis.ticker.priceChangePercent >= 0 ? 'text-[#00ff73]' : 'text-[#ff003c]'}`}>
                   {analysis.ticker.priceChangePercent >= 0 ? '+' : ''}{analysis.ticker.priceChangePercent.toFixed(2)}%
                 </span>
               </>
@@ -203,8 +228,8 @@ export const App: React.FC = () => {
               <RefreshCw className={`w-3 h-3 ${retraining ? 'animate-spin' : ''}`} />
               <span>{retraining ? 'Fitting 1000 Candles...' : 'Re-fit Neural Trees'}</span>
             </button>
-            <div className="hidden md:flex items-center gap-2 text-white/40">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#8fae8b]" />
+            <div className="hidden md:flex items-center gap-2 text-white/80">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#00ff73]" />
               <span>1,000 Depth Active</span>
             </div>
           </div>
@@ -230,7 +255,14 @@ export const App: React.FC = () => {
         </div>
 
         {/* B. Bitcoin Market Overview Card */}
-        <section id="market-overview-section" className="w-full max-w-7xl mx-auto px-6">
+        <section 
+          id="market-overview-section" 
+          className="w-full max-w-7xl mx-auto px-6 transition-transform duration-75 ease-out will-change-transform"
+          style={{
+            transform: `translateX(${marketTransformX}px)`,
+            opacity: marketOpacity
+          }}
+        >
           <MarketOverviewCard
             overview={overview}
             mempool={analysis?.mempool}
@@ -238,17 +270,14 @@ export const App: React.FC = () => {
           />
         </section>
 
-        {/* C. NovaAI 80vh Spacer — provides rhythm after the transition video wires freeze frame */}
-        <div className="h-[80vh]" aria-hidden="true" />
-
-        {/* D. NovaAI Inspired Capability Section */}
-        <CapabilitySection
-          onOpenLiveChart={handleOpenLiveChart}
-          onOpenNews={handleOpenNews}
-        />
-
         {/* C. Live Neural Market Chart & ML Probability Distribution (Matching Screenshot 1) */}
-        <section className="w-full max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch">
+        <section 
+          className="w-full max-w-7xl mx-auto px-6 grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch transition-transform duration-300 ease-out will-change-transform"
+          style={{
+            transform: `translateX(${chartTransformX}px)`,
+            opacity: chartOpacity
+          }}
+        >
           {/* Expanded Widescreen Neural Market Chart */}
           <div className="lg:col-span-8">
             <TradingChart
@@ -273,19 +302,34 @@ export const App: React.FC = () => {
         </section>
 
         {/* D. Quantitative Factors & ML Feature Weights */}
-        <section className="w-full max-w-7xl mx-auto px-6">
+        <section 
+          className="w-full max-w-7xl mx-auto px-6 transition-transform duration-75 ease-out will-change-transform"
+          style={{
+            transform: `translateX(${radarTransformX}px)`,
+            opacity: radarOpacity
+          }}
+        >
           <TechnicalRadar
             factors={analysis?.quantitative.factors || { trend: 0, momentum: 0, volatility: 0, volume: 0 }}
             reasons={analysis?.quantitative.reasons || []}
             featureImportances={analysis?.ml.feature_importances || {}}
+            modelName={analysis?.ml.model_name}
           />
         </section>
 
         {/* E. Satosphere Consensus Backtest Matrix (Unified reading) */}
-        <BacktestResults 
-          data={backtest} 
-          loading={loading} 
-        />
+        <div
+          className="transition-transform duration-75 ease-out will-change-transform"
+          style={{
+            transform: `translateX(${backtestTransformX}px)`,
+            opacity: backtestOpacity
+          }}
+        >
+          <BacktestResults 
+            data={backtest} 
+            loading={loading} 
+          />
+        </div>
       </main>
 
       {/* Plain Live Chart Dedicated View / Modal */}
@@ -308,7 +352,7 @@ export const App: React.FC = () => {
 
       {/* Footer */}
       <footer className="relative z-10 w-full border-t border-white/10 bg-black/70 py-12 px-6">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-white/50 font-mono">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-white/90 font-mono">
           <div className="flex items-center gap-3">
             <span className="satosphere-title text-2xl font-bold">
               Satosphere
@@ -323,7 +367,7 @@ export const App: React.FC = () => {
             <span>•</span>
             <span>CoinDesk Wire</span>
             <span>•</span>
-            <span className="text-[#8fae8b]">Operational</span>
+            <span className="text-[#00ff73]">Operational</span>
           </div>
         </div>
       </footer>
@@ -332,3 +376,4 @@ export const App: React.FC = () => {
 };
 
 export default App;
+

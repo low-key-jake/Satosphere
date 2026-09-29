@@ -68,7 +68,7 @@ export const CapabilitySection: React.FC<CapabilitySectionProps> = ({
                 <h3 className="text-base sm:text-lg font-medium text-white">
                   Real-time vision
                 </h3>
-                <ChevronRight className="w-4 h-4 text-white/40 group-hover:text-white group-hover:translate-x-0.5 transition-all" />
+                <ChevronRight className="w-4 h-4 text-white/80 group-hover:text-white group-hover:translate-x-0.5 transition-all" />
               </div>
               <p className="mt-1.5 text-sm leading-relaxed text-white/70">
                 Reads context as it happens and surfaces what matters before you ask.
@@ -86,7 +86,7 @@ export const CapabilitySection: React.FC<CapabilitySectionProps> = ({
                 <h3 className="text-base sm:text-lg font-medium text-white">
                   Layered insight
                 </h3>
-                <ChevronRight className="w-4 h-4 text-white/40 group-hover:text-white group-hover:translate-x-0.5 transition-all" />
+                <ChevronRight className="w-4 h-4 text-white/80 group-hover:text-white group-hover:translate-x-0.5 transition-all" />
               </div>
               <p className="mt-1.5 text-sm leading-relaxed text-white/70">
                 Moves from rough outline to sharp output without losing the thread.
@@ -104,7 +104,7 @@ export const CapabilitySection: React.FC<CapabilitySectionProps> = ({
                 <h3 className="text-base sm:text-lg font-medium text-white">
                   Adaptive speed
                 </h3>
-                <ChevronRight className="w-4 h-4 text-white/40 group-hover:text-white group-hover:translate-x-0.5 transition-all" />
+                <ChevronRight className="w-4 h-4 text-white/80 group-hover:text-white group-hover:translate-x-0.5 transition-all" />
               </div>
               <p className="mt-1.5 text-sm leading-relaxed text-white/70">
                 Learns your cadence and tightens every pass as you work.
@@ -116,3 +116,4 @@ export const CapabilitySection: React.FC<CapabilitySectionProps> = ({
     </section>
   );
 };
+

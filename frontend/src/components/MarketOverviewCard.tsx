@@ -32,16 +32,16 @@ export const MarketOverviewCard: React.FC<MarketOverviewCardProps> = ({
       {/* Top Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-6 mb-6 border-b border-white/10 gap-4">
         <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-[#8a7040]/20 border border-[#8a7040]/40 flex items-center justify-center text-[#c9b896]">
+          <div className="w-12 h-12 rounded-full bg-[#8a7040]/20 border border-[#8a7040]/40 flex items-center justify-center text-[#00f0ff]">
             <Bitcoin className="w-7 h-7" />
           </div>
           <div>
-            <div className="flex items-center gap-2 text-xs font-mono text-white/50">
+            <div className="flex items-center gap-2 text-xs font-mono text-white/90">
               <span>Cryptocurrency</span>
               <span>•</span>
               <span>USD</span>
               <span>•</span>
-              <span className="text-[#c9b896]">#1 by Market Cap</span>
+              <span className="text-[#00f0ff]">#1 by Market Cap</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white flex items-center gap-2">
               <span>Bitcoin USD Price (BTC-USD)</span>
@@ -53,7 +53,7 @@ export const MarketOverviewCard: React.FC<MarketOverviewCardProps> = ({
           <div className="text-3xl sm:text-4xl font-mono font-bold text-white tracking-tight">
             ${overview.current_price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}
           </div>
-          <div className={`text-sm font-mono font-semibold flex items-center gap-1.5 ${isPositive ? 'text-[#8fae8b]' : 'text-[#b87175]'}`}>
+          <div className={`text-sm font-mono font-semibold flex items-center gap-1.5 ${isPositive ? 'text-[#00ff73]' : 'text-[#b87175]'}`}>
             <span>{isPositive ? '+' : ''}{(overview.current_price * (priceChangePercent / 100)).toFixed(2)}</span>
             <span>({isPositive ? '+' : ''}{priceChangePercent.toFixed(2)}%)</span>
           </div>
@@ -63,7 +63,7 @@ export const MarketOverviewCard: React.FC<MarketOverviewCardProps> = ({
       {/* Grid of Key Market Statistics (Matching Screenshot 2) */}
       <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 py-2">
         <div className="p-3.5 rounded-2xl bg-white/5 border border-white/5">
-          <div className="flex items-center gap-1 text-[11px] font-mono text-white/40 mb-1">
+          <div className="flex items-center gap-1 text-[11px] font-mono text-white/80 mb-1">
             <span>Market Cap</span>
             <Info className="w-3 h-3" />
           </div>
@@ -71,7 +71,7 @@ export const MarketOverviewCard: React.FC<MarketOverviewCardProps> = ({
         </div>
 
         <div className="p-3.5 rounded-2xl bg-white/5 border border-white/5">
-          <div className="flex items-center gap-1 text-[11px] font-mono text-white/40 mb-1">
+          <div className="flex items-center gap-1 text-[11px] font-mono text-white/80 mb-1">
             <span>24h Volume</span>
             <Info className="w-3 h-3" />
           </div>
@@ -79,28 +79,28 @@ export const MarketOverviewCard: React.FC<MarketOverviewCardProps> = ({
         </div>
 
         <div className="p-3.5 rounded-2xl bg-white/5 border border-white/5">
-          <div className="text-[11px] font-mono text-white/40 mb-1">Day's Range</div>
+          <div className="text-[11px] font-mono text-white/80 mb-1">Day's Range</div>
           <div className="text-xs font-mono font-semibold text-white/90">
             ${overview.days_range_low.toLocaleString()} - ${overview.days_range_high.toLocaleString()}
           </div>
         </div>
 
         <div className="p-3.5 rounded-2xl bg-white/5 border border-white/5">
-          <div className="text-[11px] font-mono text-white/40 mb-1">52 Week Range</div>
+          <div className="text-[11px] font-mono text-white/80 mb-1">52 Week Range</div>
           <div className="text-xs font-mono font-semibold text-white/90">
             ${overview.week_52_low.toLocaleString()} - ${overview.week_52_high.toLocaleString()}
           </div>
         </div>
 
         <div className="p-3.5 rounded-2xl bg-white/5 border border-white/5">
-          <div className="text-[11px] font-mono text-white/40 mb-1">All-Time High</div>
-          <div className="text-sm font-mono font-bold text-[#c9b896]">
+          <div className="text-[11px] font-mono text-white/80 mb-1">All-Time High</div>
+          <div className="text-sm font-mono font-bold text-[#00f0ff]">
             ${overview.all_time_high.toLocaleString()}
           </div>
         </div>
 
         <div className="p-3.5 rounded-2xl bg-white/5 border border-white/5">
-          <div className="text-[11px] font-mono text-white/40 mb-1">Circulating Supply</div>
+          <div className="text-[11px] font-mono text-white/80 mb-1">Circulating Supply</div>
           <div className="text-sm font-mono font-bold text-white/90">
             {overview.circulating_supply}
           </div>
@@ -109,17 +109,17 @@ export const MarketOverviewCard: React.FC<MarketOverviewCardProps> = ({
 
       {/* On-Chain Mempool Telemetry Row */}
       {mempool && (
-        <div className="mt-4 pt-4 border-t border-white/10 flex flex-wrap items-center justify-between text-xs font-mono text-white/60 gap-4">
+        <div className="mt-4 pt-4 border-t border-white/10 flex flex-wrap items-center justify-between text-xs font-mono text-white/90 gap-4">
           <div className="flex items-center gap-2">
-            <Zap className="w-3.5 h-3.5 text-[#c9b896]" />
+            <Zap className="w-3.5 h-3.5 text-[#00f0ff]" />
             <span>Mempool Fee: <strong className="text-white">{mempool.recommended_fees.fastestFee} sat/vB</strong> (Priority)</span>
           </div>
           <div className="flex items-center gap-2">
-            <Database className="w-3.5 h-3.5 text-[#9aadc0]" />
+            <Database className="w-3.5 h-3.5 text-[#ff00ff]" />
             <span>Unconfirmed Transactions: <strong className="text-white">{mempool.mempool_tx_count.toLocaleString()}</strong></span>
           </div>
           <div className="flex items-center gap-2">
-            <Activity className="w-3.5 h-3.5 text-[#8fae8b]" />
+            <Activity className="w-3.5 h-3.5 text-[#00ff73]" />
             <span>Hashrate: <strong className="text-white">{mempool.hashrate_ehs} EH/s</strong></span>
           </div>
         </div>
@@ -127,3 +127,4 @@ export const MarketOverviewCard: React.FC<MarketOverviewCardProps> = ({
     </div>
   );
 };
+

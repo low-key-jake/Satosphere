@@ -34,7 +34,7 @@ export const TradingChart: React.FC<TradingChartProps> = ({
 
   if (!candles || candles.length === 0) {
     return (
-      <div className="glass-panel p-10 rounded-[36px] min-h-[480px] flex items-center justify-center text-white/50 font-mono">
+      <div className="glass-panel p-10 rounded-[36px] min-h-[480px] flex items-center justify-center text-white/90 font-mono">
         Loading High-Resolution Candlestick Stream...
       </div>
     );
@@ -87,12 +87,12 @@ export const TradingChart: React.FC<TradingChartProps> = ({
   const isSell = verdict?.includes('SELL');
 
   return (
-    <div id="chart" className="glass-panel p-6 sm:p-10 rounded-[36px] flex flex-col justify-between relative overflow-hidden border border-white/10 shadow-2xl">
+    <div id="chart" className="glass-panel p-6 sm:p-10 rounded-[36px] flex flex-col justify-between relative overflow-hidden shadow-2xl">
       {/* Chart Header Bar */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between pb-6 mb-6 border-b border-white/10 gap-4">
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2">
-            <ChartIcon className="w-5 h-5 text-[#c9b896]" />
+            <ChartIcon className="w-5 h-5 text-[#00f0ff]" />
             <h3 className="text-xl font-bold font-mono tracking-tight text-white uppercase">
               LIVE NEURAL MARKET CHART
             </h3>
@@ -109,9 +109,9 @@ export const TradingChart: React.FC<TradingChartProps> = ({
                   : 'bg-slate-800/80 text-white/90 border border-white/20'
               }`}
             >
-              {isBuy && <TrendingUp className="w-4 h-4 text-[#8fae8b]" />}
-              {isSell && <TrendingDown className="w-4 h-4 text-[#c4868a]" />}
-              {!isBuy && !isSell && <AlertCircle className="w-4 h-4 text-[#c9b896]" />}
+              {isBuy && <TrendingUp className="w-4 h-4 text-[#00ff73]" />}
+              {isSell && <TrendingDown className="w-4 h-4 text-[#ff003c]" />}
+              {!isBuy && !isSell && <AlertCircle className="w-4 h-4 text-[#00f0ff]" />}
               <span>{verdict}</span>
               {consensusScore !== undefined && (
                 <span className="text-[11px] opacity-75">({consensusScore > 0 ? `+${consensusScore}` : consensusScore})</span>
@@ -127,7 +127,7 @@ export const TradingChart: React.FC<TradingChartProps> = ({
                 onClick={() => onSymbolChange(sym)}
                 data-cursor="Select"
                 className={`px-3 py-1 rounded-lg text-xs font-mono font-medium transition-all ${
-                  symbol === sym ? 'bg-[#a89068] text-black font-semibold shadow-md' : 'text-white/60 hover:text-white'
+                  symbol === sym ? 'bg-[#a89068] text-black font-semibold shadow-md' : 'text-white/90 hover:text-white'
                 }`}
               >
                 {sym.replace('USDT', '')}
@@ -143,7 +143,7 @@ export const TradingChart: React.FC<TradingChartProps> = ({
                 onClick={() => onIntervalChange(intv)}
                 data-cursor="Interval"
                 className={`px-2.5 py-1 rounded-lg text-xs font-mono font-medium transition-all ${
-                  interval === intv ? 'bg-white/20 text-white shadow-md' : 'text-white/60 hover:text-white'
+                  interval === intv ? 'bg-white/20 text-white shadow-md' : 'text-white/90 hover:text-white'
                 }`}
               >
                 {intv}
@@ -157,7 +157,7 @@ export const TradingChart: React.FC<TradingChartProps> = ({
           <button
             onClick={() => setShowIndicators(p => ({ ...p, sma20: !p.sma20 }))}
             className={`px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
-              showIndicators.sma20 ? 'bg-[#8a7040]/20 border-[#8a7040]/50 text-[#c9b896] font-semibold' : 'bg-white/5 border-white/10 text-white/40'
+              showIndicators.sma20 ? 'bg-[#8a7040]/20 border-[#8a7040]/50 text-[#00f0ff] font-semibold' : 'bg-white/5 border-white/10 text-white/80'
             }`}
           >
             SMA 20
@@ -165,7 +165,7 @@ export const TradingChart: React.FC<TradingChartProps> = ({
           <button
             onClick={() => setShowIndicators(p => ({ ...p, ema50: !p.ema50 }))}
             className={`px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
-              showIndicators.ema50 ? 'bg-[#4a6080]/20 border-[#4a6080]/50 text-[#9aadc0] font-semibold' : 'bg-white/5 border-white/10 text-white/40'
+              showIndicators.ema50 ? 'bg-[#4a6080]/20 border-[#4a6080]/50 text-[#ff00ff] font-semibold' : 'bg-white/5 border-white/10 text-white/80'
             }`}
           >
             EMA 50
@@ -173,7 +173,7 @@ export const TradingChart: React.FC<TradingChartProps> = ({
           <button
             onClick={() => setShowIndicators(p => ({ ...p, bollinger: !p.bollinger }))}
             className={`px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
-              showIndicators.bollinger ? 'bg-[#4a4a70]/20 border-[#4a4a70]/50 text-[#9a8fc0] font-semibold' : 'bg-white/5 border-white/10 text-white/40'
+              showIndicators.bollinger ? 'bg-[#4a4a70]/20 border-[#4a4a70]/50 text-[#9a8fc0] font-semibold' : 'bg-white/5 border-white/10 text-white/80'
             }`}
           >
             Bollinger Bands
@@ -181,7 +181,7 @@ export const TradingChart: React.FC<TradingChartProps> = ({
           <button
             onClick={() => setShowIndicators(p => ({ ...p, markers: !p.markers }))}
             className={`px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
-              showIndicators.markers ? 'bg-[#4a6e4a]/20 border-[#4a6e4a]/50 text-[#8fae8b] font-semibold' : 'bg-white/5 border-white/10 text-white/40'
+              showIndicators.markers ? 'bg-[#4a6e4a]/20 border-[#4a6e4a]/50 text-[#00ff73] font-semibold' : 'bg-white/5 border-white/10 text-white/80'
             }`}
           >
             Trade Signals
@@ -193,13 +193,13 @@ export const TradingChart: React.FC<TradingChartProps> = ({
       <div className="flex flex-wrap items-center justify-between text-xs font-mono mb-4 text-white/75 bg-white/5 p-3.5 rounded-2xl border border-white/10">
         <div className="flex items-center gap-5 flex-wrap">
           <span>TIME: <strong className="text-white">{hoveredCandle.time}</strong></span>
-          <span>CLOSE: <strong className="text-[#8fae8b] font-semibold">${hoveredCandle.close.toLocaleString()}</strong></span>
+          <span>CLOSE: <strong className="text-[#00ff73] font-semibold">${hoveredCandle.close.toLocaleString()}</strong></span>
           <span>HIGH: <strong className="text-white/80">${hoveredCandle.high.toLocaleString()}</strong></span>
           <span>LOW: <strong className="text-white/80">${hoveredCandle.low.toLocaleString()}</strong></span>
         </div>
         <div className="flex items-center gap-5 flex-wrap">
-          {hoveredCandle.rsi14 && <span>RSI 14: <strong className="text-[#c9b896]">{hoveredCandle.rsi14}</strong></span>}
-          {hoveredCandle.sma20 && <span>SMA 20: <strong className="text-[#9aadc0]">${hoveredCandle.sma20.toLocaleString()}</strong></span>}
+          {hoveredCandle.rsi14 && <span>RSI 14: <strong className="text-[#00f0ff]">{hoveredCandle.rsi14}</strong></span>}
+          {hoveredCandle.sma20 && <span>SMA 20: <strong className="text-[#ff00ff]">${hoveredCandle.sma20.toLocaleString()}</strong></span>}
         </div>
       </div>
 
@@ -219,8 +219,8 @@ export const TradingChart: React.FC<TradingChartProps> = ({
         <svg viewBox={`0 0 ${width} ${height}`} className="w-full h-full overflow-visible">
           <defs>
             <linearGradient id="chartGradientAesthetic" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#e5c07b" stopOpacity="0.28" />
-              <stop offset="100%" stopColor="#e5c07b" stopOpacity="0.0" />
+              <stop offset="0%" stopColor="#00f0ff" stopOpacity="0.28" />
+              <stop offset="100%" stopColor="#00f0ff" stopOpacity="0.0" />
             </linearGradient>
           </defs>
 
@@ -250,16 +250,16 @@ export const TradingChart: React.FC<TradingChartProps> = ({
 
           {/* SMA 20 */}
           {showIndicators.sma20 && smaPoints && (
-            <polyline points={smaPoints} fill="none" stroke="#d97706" strokeWidth="2" />
+            <polyline points={smaPoints} fill="none" stroke="#ff00ff" strokeWidth="2" />
           )}
 
           {/* EMA 50 */}
           {showIndicators.ema50 && emaPoints && (
-            <polyline points={emaPoints} fill="none" stroke="#93c5fd" strokeWidth="2" />
+            <polyline points={emaPoints} fill="none" stroke="#00ff73" strokeWidth="2" />
           )}
 
           {/* Main Price Line in Warm Gold */}
-          <polyline points={pricePoints} fill="none" stroke="#e5c07b" strokeWidth="3" />
+          <polyline points={pricePoints} fill="none" stroke="#00f0ff" strokeWidth="3" />
 
           {/* Trade Execution Markers (Triangles from original repo upgraded) */}
           {showIndicators.markers && trades.map((trade, idx) => {
@@ -274,7 +274,7 @@ export const TradingChart: React.FC<TradingChartProps> = ({
                 {isBuyTrade ? (
                   <polygon
                     points={`${x},${y - 16} ${x - 8},${y} ${x + 8},${y}`}
-                    fill="#8fae8b"
+                    fill="#00ff73"
                     stroke="#ffffff"
                     strokeWidth="1.5"
                     className="drop-shadow-[0_0_6px_rgba(143,174,139,0.4)]"
@@ -282,7 +282,7 @@ export const TradingChart: React.FC<TradingChartProps> = ({
                 ) : (
                   <polygon
                     points={`${x},${y + 16} ${x - 8},${y} ${x + 8},${y}`}
-                    fill="#c4868a"
+                    fill="#ff003c"
                     stroke="#ffffff"
                     strokeWidth="1.5"
                     className="drop-shadow-[0_0_6px_rgba(196,134,138,0.4)]"
@@ -317,18 +317,19 @@ export const TradingChart: React.FC<TradingChartProps> = ({
       </div>
 
       {/* Chart Footer Indicator Legend */}
-      <div className="flex flex-wrap items-center justify-between text-xs font-mono text-white/50 pt-5 mt-2">
+      <div className="flex flex-wrap items-center justify-between text-xs font-mono text-white/90 pt-5 mt-2">
         <div className="flex items-center gap-5 flex-wrap">
-          <span className="flex items-center gap-1.5"><span className="w-3 h-0.5 bg-[#e5c07b]" /> BTC Price</span>
-          <span className="flex items-center gap-1.5"><span className="w-3 h-0.5 bg-[#d97706]" /> SMA 20</span>
-          <span className="flex items-center gap-1.5"><span className="w-3 h-0.5 bg-[#93c5fd]" /> EMA 50</span>
+          <span className="flex items-center gap-1.5"><span className="w-3 h-0.5 bg-[#00f0ff]" /> BTC Price</span>
+          <span className="flex items-center gap-1.5"><span className="w-3 h-0.5 bg-[#ff00ff]" /> SMA 20</span>
+          <span className="flex items-center gap-1.5"><span className="w-3 h-0.5 bg-[#00ff73]" /> EMA 50</span>
           <span className="flex items-center gap-1.5"><span className="w-3 h-0.5 border-t border-dashed border-white/50" /> Bollinger Bands (20, 2σ)</span>
         </div>
         <div className="flex items-center gap-5">
-          <span className="flex items-center gap-1 text-[#8fae8b]">▲ Buy Signal</span>
-          <span className="flex items-center gap-1 text-[#c4868a]">▼ Sell Signal</span>
+          <span className="flex items-center gap-1 text-[#00ff73]">▲ Buy Signal</span>
+          <span className="flex items-center gap-1 text-[#ff003c]">▼ Sell Signal</span>
         </div>
       </div>
     </div>
   );
 };
+
